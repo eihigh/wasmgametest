@@ -30,7 +30,7 @@ jobs:
       uses: actions/setup-go@v4
       with:
         go-version: '1.21'
-    - name: Copy artifact
+    - name: Build artifact
       run: go run ./tool dist
     - name: Setup Pages
       uses: actions/configure-pages@v3
