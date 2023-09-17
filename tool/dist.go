@@ -71,6 +71,11 @@ func dist(args []string) error {
 		flag.Usage()
 	}
 
+	// Build before copying
+	if err := build(nil); err != nil {
+		return fmt.Errorf("build: %w", err)
+	}
+
 	// Reset the existing distribution
 	if err := os.RemoveAll(distRoot); err != nil {
 		return fmt.Errorf("remove existing dist: %w", err)
