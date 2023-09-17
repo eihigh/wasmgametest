@@ -41,6 +41,14 @@ func update(args []string) error {
 		return fmt.Errorf("go get all: %w", err)
 	}
 
+	log.Println("Cleanup dependencies (go mod tidy)")
+	cmd = exec.Command("go", "mod", "tidy")
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("go mod tidy: %w", err)
+	}
+
 	return nil
 }
 
