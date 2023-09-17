@@ -12,18 +12,16 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 )
 
-var (
+type game struct {
 	sampleJSON []byte
-)
-
-type game struct{}
+}
 
 func (g *game) Update() error {
 	return nil
 }
 
 func (g *game) Draw(screen *ebiten.Image) {
-	ebitenutil.DebugPrint(screen, string(sampleJSON))
+	ebitenutil.DebugPrint(screen, string(g.sampleJSON))
 }
 
 func (g *game) Layout(w, h int) (int, int) {
@@ -31,9 +29,8 @@ func (g *game) Layout(w, h int) (int, int) {
 }
 
 func main() {
-	sampleJSON, _ = readFile("asset/sample.json")
-
 	g := &game{}
+	g.sampleJSON, _ = readFile("asset/sample.json")
 	if err := ebiten.RunGame(g); err != nil {
 		panic(err)
 	}
@@ -44,6 +41,7 @@ func main() {
 func open(name string) (io.ReadCloser, error) {
 	name = filepath.Clean(name)
 	if runtime.GOOS == "js" {
+		// TODO: use more lightweight method such as marwan-at-work/wasm-fetch
 		resp, err := http.Get(name)
 		if err != nil {
 			return nil, err
