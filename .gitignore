@@ -1,0 +1,12 @@
+/dist/
+/dist.zip
+
+*.exe
+*.exe~
+*.wasm
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+go.work
