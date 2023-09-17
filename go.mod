@@ -2,7 +2,7 @@ module example.com/game
 
 go 1.21.1
 
-require github.com/hajimehoshi/ebiten/v2 v2.5.9
+require github.com/hajimehoshi/ebiten/v2 v2.5.8
 
 require (
 	github.com/ebitengine/purego v0.4.0 // indirect
