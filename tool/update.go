@@ -6,23 +6,12 @@ import (
 	"log"
 	"os"
 	"os/exec"
-	"path/filepath"
-	"runtime"
-	"strings"
 )
 
 func update(args []string) error {
 	// update can only be runnable in the project root
 	if _, err := os.Stat("go.mod"); errors.Is(err, os.ErrNotExist) {
 		return fmt.Errorf("workdir is not the project root")
-	}
-
-	log.Println("Copy $GOROOT/misc/wasm/wasm_exec.js")
-	goroot := findGOROOT()
-	src := filepath.Join(goroot, "misc", "wasm", "wasm_exec.js")
-	dst := "wasm_exec.js"
-	if err := copyFile(dst, src); err != nil {
-		return fmt.Errorf("copy wasm_exec.js: %w", err)
 	}
 
 	log.Println("Update go (go get go)")
@@ -50,16 +39,4 @@ func update(args []string) error {
 	}
 
 	return nil
-}
-
-func findGOROOT() string {
-	if env := os.Getenv("GOROOT"); env != "" {
-		return filepath.Clean(env)
-	}
-	def := filepath.Clean(runtime.GOROOT())
-	out, err := exec.Command("go", "env", "GOROOT").Output()
-	if err != nil {
-		return def
-	}
-	return strings.TrimSpace(string(out))
 }

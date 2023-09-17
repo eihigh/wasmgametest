@@ -7,6 +7,9 @@ import (
 	"net/url"
 	"os"
 	"os/exec"
+	"path/filepath"
+	"runtime"
+	"strings"
 )
 
 func build(args []string) error {
@@ -24,6 +27,14 @@ func build(args []string) error {
 	if flag.NArg() > 0 {
 		fmt.Fprintln(os.Stderr, "Unexpected arguments:", flag.Args())
 		flag.Usage()
+	}
+
+	// Copy $GOROOT/misc/wasm/wasm_exec.js
+	goroot := findGOROOT()
+	src := filepath.Join(goroot, "misc", "wasm", "wasm_exec.js")
+	dst := "wasm_exec.js"
+	if err := copyFile(dst, src); err != nil {
+		return fmt.Errorf("copy wasm_exec.js: %w", err)
 	}
 
 	// Run go build
@@ -46,4 +57,16 @@ func build(args []string) error {
 	http.PostForm(u.String(), nil)
 
 	return nil
+}
+
+func findGOROOT() string {
+	if env := os.Getenv("GOROOT"); env != "" {
+		return filepath.Clean(env)
+	}
+	def := filepath.Clean(runtime.GOROOT())
+	out, err := exec.Command("go", "env", "GOROOT").Output()
+	if err != nil {
+		return def
+	}
+	return strings.TrimSpace(string(out))
 }
