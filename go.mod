@@ -1,6 +1,6 @@
 module example.com/game
 
-go 1.21.1
+go 1.20
 
 require github.com/hajimehoshi/ebiten/v2 v2.5.9
 
