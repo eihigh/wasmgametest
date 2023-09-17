@@ -1,5 +1,7 @@
 ## Command `tool`
 
+(English / 日本語)
+
 ```
 $ go run ./tool
 usage: go run ./tool <command> [arguments]
